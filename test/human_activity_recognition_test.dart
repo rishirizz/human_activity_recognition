@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:human_activity_recognition/human_activity_recognition.dart';
 
-void main() {
+void main()  {
+   WidgetsFlutterBinding.ensureInitialized();
   group('HumanActivityRecognition', () {
     late HumanActivityRecognition har;
 
