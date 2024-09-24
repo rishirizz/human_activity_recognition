@@ -1,11 +1,12 @@
 library human_activity_recognition;
 
 import 'dart:async';
+import 'dart:math';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:vector_math/vector_math.dart';
 
 /// Enum to represent the different activities detected
-enum Activity { walking, running, standing, sitting, unknown }
+enum Activity { walking, running, standing, sitting, fastMovement, unknown }
 
 /// A class that provides human activity recognition based on sensor data
 class HumanActivityRecognition {
@@ -26,8 +27,16 @@ class HumanActivityRecognition {
 
     // Listen to gyroscope data
     _gyroscopeSubscription = gyroscopeEventStream().listen((event) {
-      // You can process gyroscope data here for more advanced activity detection
-      // For example, if you want to detect phone rotation or fast movements
+      double gyroscopeMagnitude =
+          sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
+      if (gyroscopeMagnitude > 2.0) {
+        // Threshold for detecting fast movements
+        print(
+            'Fast movement detected! Gyroscope: x=${event.x}, y=${event.y}, z=${event.z}');
+        activityController.add(Activity.fastMovement);
+      } else {
+        print('Gyroscope: x=${event.x}, y=${event.y}, z=${event.z}');
+      }
     });
   }
 
